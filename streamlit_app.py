@@ -3,6 +3,8 @@
 #Modules
 import streamlit as st
 import os
+import google.generativeai as ggi
+
 
 #API Key from Secrets file to variable
 apikey = st.secrets["API_KEY"]
