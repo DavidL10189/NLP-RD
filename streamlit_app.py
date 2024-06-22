@@ -10,7 +10,7 @@ import google.generativeai as ggi
 apikey = st.secrets["API_KEY"]
 
 #UI - Title
-st.title("Troy and NLP OS IF")
+st.title("Troy and OS Interface chatbox")
 
 #Apply our Gemini API Key
 ggi.configure(api_key = apikey)
@@ -22,15 +22,14 @@ geminiModel = ggi.GenerativeModel("gemini-1.5-pro")
 geminiChat = geminiModel.start_chat()
 
 #Prompt the user to input their request
-userQuestion = st.text_input("You can ask the model about Troy Univerity or about how to perform OS tasks")
-submitButton = st.button("Send your question to Gemini")
+userQuestion = st.text_input("You can ask the model about Troy University or about how to perform Windows OS tasks")
+#submitButton = st.button("Send your question to Gemini")
 
 #Functionality to perform the communication with the API
-if submitButton and userQuestion: 
-    #Send the question to Gemini
-    geminiResponse = geminiChat.send_message(userQuestion,stream=True)
+if userQuestion:
+    #Send the question to Gemini and get the response
+    geminiResponse = geminiChat.send_message(userQuestion,stream=False)
     #Display the response in the page's UI
     st.subheader("Gemini's Response: ")    
     for word in geminiResponse:
         st.text(word.text)
-
