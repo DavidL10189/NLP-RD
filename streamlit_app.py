@@ -33,3 +33,4 @@ if userQuestion:
     st.subheader("Gemini's Response: ")    
     for word in geminiResponse:
         st.text(word.text)
+        #
