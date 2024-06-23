@@ -4,7 +4,7 @@
 import streamlit as st
 import os
 import google.generativeai as ggi
-
+from langchain_community.document_loaders.csv_loader import CSVLoader
 
 #Get API Key from Secrets file into a variable
 apikey = st.secrets["API_KEY"]
