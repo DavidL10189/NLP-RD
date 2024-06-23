@@ -6,10 +6,13 @@ import os
 import google.generativeai as ggi
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
-from langchain.document_loaders.csv_loader import CSVLoader
+from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain.chains import RetrievalQA
+from langchain_community.vectorstores import Chroma
+from langchain.chains.question_answering import load_qa_chain
 
 #Variables to hold our different documents to be used
 fileTroy = "RAGDocuments/prompt_answer.csv"
