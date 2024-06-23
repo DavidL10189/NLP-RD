@@ -17,11 +17,19 @@ def DocLoader(fileName):
    loader = CSVLoader(fileName, csv_args={'delimiter':','})
    return loader.load()
 
+#Function to split a document
+def DocSplitter(document):
+   splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=200)
+   return splitter.split_documents(document)
+
+
 #Load our documents used for RAG
 loadedTroy = DocLoader(fileTroy)
 loadedOS = DocLoader(fileOS)
 
-st.write(loadedTroy)
+#Split our documents
+troy_Split = DocSplitter(loadedTroy)
+OS_Split = DocSplitter(loadedOS)
 
 #CSVLoader()
 #ragDirLoader = DirectoryLoader("RAGDocuments", glob='*.csv"')
