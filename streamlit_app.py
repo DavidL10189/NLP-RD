@@ -42,5 +42,3 @@ if userQuestion:
             responseComplete = responseTemp[newlinePos:]                  
          else:
             responseComplete += responseTemp
-                   
-            
