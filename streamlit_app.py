@@ -33,14 +33,14 @@ if userQuestion:
     st.subheader("Gemini's Response: ")    
     
     #Temporary string to hold the Gemini response. To make the output display smoother.
-    geminiResponseSectionTemp = ""
+    geminiResponseChunkTemp = ""
 
     #Loop through the sections of response text
-    for geminiResponseSection in geminiResponse:
-            geminiResponseSectionTemp += geminiResponseSection.text        
-            if geminiResponseSectionTemp.text.__len__ < 10:
-                geminiResponseSectionTemp += geminiResponse.text
+    for geminiResponseChunk in geminiResponse:
+            geminiResponseChunkTemp += geminiResponseChunk.text        
+            if geminiResponseChunkTemp.__len__ < 10:
+                geminiResponseChunkTemp += geminiResponseChunk.text
             else:
-                st.write(geminiResponseSectionTemp)
-                geminiResponseSectionTemp = ""    
+                st.write(geminiResponseChunkTemp)
+                geminiResponseChunkTemp = ""    
             
