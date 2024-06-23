@@ -46,7 +46,7 @@ st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey)
 
 #Prompt the user to input their request
-userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **{CTRL+Enter}** to send your question.")
+userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
 
 responseTitle = st.empty()
 
