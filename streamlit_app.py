@@ -38,9 +38,8 @@ if userQuestion:
     #Loop through the sections of response text
     for geminiResponseChunk in geminiResponse:
             geminiResponseChunkTemp += geminiResponseChunk.text        
-            if geminiResponseChunkTemp.__len__ < 10:
-                geminiResponseChunkTemp += geminiResponseChunk.text
-            else:
+            if len(geminiResponseChunkTemp) > 10:
                 st.write(geminiResponseChunkTemp)
-                geminiResponseChunkTemp = ""    
+                geminiResponseChunkTemp = "" 
+                   
             
