@@ -13,10 +13,15 @@ from langchain.chains import LLMChain
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 #Variables to hold our different documents to be used
 fileTroy = "RAGDocuments/prompt_answer.csv"
 fileOS = "RAGDocuments/prompt_OS_answer.csv"
+
+
+#Get API Key from Secrets file into a variable
+apikey = st.secrets["API_KEY"]
 
 #Function to load a document
 def DocLoader(fileName):
@@ -24,13 +29,10 @@ def DocLoader(fileName):
    return loader.load()
 
 #Function to split a document
+#Chunking sizes chosen should cover entire lines and overlap parts of contiguous lines
 def DocSplitter(document):
-   splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=200)
+   splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
    return splitter.split_documents(document)
-
-#Text to display status to the user
-headerDisplay = "Hello"
-detailDisplay = "Please ask a question above"
 
 #Load our documents used for RAG
 loadedTroy = DocLoader(fileTroy)
@@ -40,13 +42,20 @@ loadedOS = DocLoader(fileOS)
 troy_Split = DocSplitter(loadedTroy)
 OS_Split = DocSplitter(loadedOS)
 
-#Get API Key from Secrets file into a variable
-apikey = st.secrets["API_KEY"]
+#Create embeddings object
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=apikey)
+
+#Use Troy csv chunks and embeddings to create vectorDB
+vector_index = Chroma.from_texts(troy_Split, embeddings).as_retriever(search_kwargs={"k":len(troy_Split)})
+
+#Text to display status to the user
+headerDisplay = "Hello"
+detailDisplay = "Please ask a question above"
 
 st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 
-#Apply the Gemini API Key
-lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey)
+#Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with strong matches
+lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.2,convert_system_message_to_human=True)
 
 #Prompt the user to input their request
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
