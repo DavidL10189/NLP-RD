@@ -28,9 +28,19 @@ userQuestion = st.text_input("You can ask the model about Troy University or abo
 #Functionality to perform the communication with the API
 if userQuestion:
     #Send the question to Gemini and get the response
-    geminiResponse = geminiChat.send_message(userQuestion,stream=False)
+    geminiResponse = geminiChat.send_message(userQuestion,stream=True)
     #Display the response in the page's UI
     st.subheader("Gemini's Response: ")    
-    for word in geminiResponse:
-        st.text(word.text)
-        #
+    
+    #Temporary string to hold the Gemini response. To make the output display smoother.
+    geminiResponseSectionTemp = ""
+
+    #Loop through the sections of response text
+    for geminiResponseSection in geminiResponse:
+            geminiResponseSectionTemp += geminiResponseSection.text        
+            if geminiResponseSectionTemp.text.__len__ < 10:
+                geminiResponseSectionTemp += geminiResponse.text
+            else:
+                st.write(geminiResponseSectionTemp)
+                geminiResponseSectionTemp = ""    
+            
