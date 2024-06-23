@@ -40,17 +40,17 @@ OS_Split = DocSplitter(loadedOS)
 #Get API Key from Secrets file into a variable
 apikey = st.secrets["API_KEY"]
 
-st.title("Troy University and Gemini assistant")
+st.title("Gemini assistant - NLP R&D")
 
 #Apply the Gemini API Key
 lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey)
 
 #Prompt the user to input their request
-userQuestion = st.text_area("You can ask about Troy University and in the future interface with your OS!")
+userQuestion = st.text_area("You can ask general questions, about Troy University, and in the future interface with your OS! Hit CTRL+Enter to send your question.")
 
 responseTitle = st.empty()
 
-responseTitle.write("Please enter your question above and press CTRL+Enter")
+responseTitle.write("")
 
 #Functionality to perform the communication with the API
 if userQuestion:
