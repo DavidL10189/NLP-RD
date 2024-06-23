@@ -21,10 +21,7 @@ def DocLoader(fileName):
 loadedTroy = DocLoader(fileTroy)
 loadedOS = DocLoader(fileOS)
 
-
-def DoIt():
-   st.write("Do It")
-
+st.write(loadedTroy)
 
 #CSVLoader()
 #ragDirLoader = DirectoryLoader("RAGDocuments", glob='*.csv"')
