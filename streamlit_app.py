@@ -1,10 +1,15 @@
-#NLP R&D App - OS I/F
+#Research & Development App - OS Natural Language Interface
 
 #Modules
 import streamlit as st
 import os
 import google.generativeai as ggi
-from langchain_community.document_loaders.csv_loader import CSVLoader
+from langchain.document_loaders import DirectoryLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
+
+#Load our documents used for RAG
+
+
 
 #Get API Key from Secrets file into a variable
 apikey = st.secrets["API_KEY"]
@@ -24,7 +29,8 @@ userQuestion = st.text_input("You can ask the model about Troy University or abo
 
 #Functionality to perform the communication with the API
 if userQuestion:
-    #Send the question to Gemini and get the response
+    #Send the question to Gemini and get the response - use streamed respone
+    #for better UI responsiveness.
     geminiResponse = geminiChat.send_message(userQuestion,stream=True)
       
     st.subheader("Gemini's Response: ")    

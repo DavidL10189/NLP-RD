@@ -2,3 +2,6 @@ streamlit-nightly
 google-generativeai
 langchain
 langchain_community
+langchain-core
+langchain-google-genai
+langchain-text-splitters
