@@ -4,12 +4,31 @@
 import streamlit as st
 import os
 import google.generativeai as ggi
-from langchain.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
+from langchain.document_loaders.csv_loader import CSVLoader
+
+#Variables to hold our different documents to be used
+fileTroy = "RAGDocuments/prompt_answer.csv"
+fileOS = "RAGDocuments/prompt_OS_answer.csv"
+
+#Function to load a document
+def DocLoader(fileName):
+   loader = CSVLoader(fileName, csv_args={'delimiter':','})
+   return loader.load()
 
 #Load our documents used for RAG
+loadedTroy = DocLoader(fileTroy)
+loadedOS = DocLoader(fileOS)
 
 
+def DoIt():
+   st.write("Do It")
+
+
+#CSVLoader()
+#ragDirLoader = DirectoryLoader("RAGDocuments", glob='*.csv"')
+#ragDocuments = ragDirLoader.load()
 
 #Get API Key from Secrets file into a variable
 apikey = st.secrets["API_KEY"]
