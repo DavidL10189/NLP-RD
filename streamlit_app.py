@@ -49,7 +49,7 @@ troy_Split = DocSplitter(loadedTroy)
 OS_Split = DocSplitter(loadedOS)
 
 #Create embeddings object
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embeddings-001",google_api_key=apikey)
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=apikey)
 st.write(len(troy_Split))
 #Use Troy csv chunks and embeddings to create vectorDB
 vector_index = Chroma.from_documents(troy_Split, embeddings)#.as_retriever(search_kwargs={"k":1})
