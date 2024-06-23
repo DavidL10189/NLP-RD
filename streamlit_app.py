@@ -49,14 +49,17 @@ lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey)
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
 
 responseTitle = st.empty()
-
 responseTitle.write("")
+responseBody = st.empty()
+responseBody.write("")
+
 
 #Functionality to perform the communication with the API
 if userQuestion:
    responseTitle.write("Processing")
+   responseBody.write("")
    userQuestion_Prompt = PromptTemplate.from_template("{userQuestion}")
    lcChain = LLMChain(llm=lcGemini, prompt = userQuestion_Prompt, verbose=True)
    lcResponse = lcChain.run(userQuestion)
    responseTitle.write("")
-   st.write(lcResponse)
+   responseBody.write(lcResponse)
