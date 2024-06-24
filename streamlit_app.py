@@ -39,26 +39,24 @@ def DocLoader(fileName):
 #Chunking sizes chosen should cover entire lines and overlap parts of contiguous lines
 def DocSplitter(document):
    splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
-   #context = "\n\n".join(str(p.page_content) for p in document)
-   #return splitter.split_text(context)
    return splitter.split_documents(document)
 
+# Commented due to streamlit community cloud now giving file errors. Will use again once resolved.
 #Load our documents used for RAG
 #loadedTroy = DocLoader(fileTroy)
 #loadedOS = DocLoader(fileOS)
-
 #Split our documents
 #troy_Split = DocSplitter(loadedTroy)
 #OS_Split = DocSplitter(loadedOS)
-#st.write(troy_Split)
+#Use Troy csv chunks and embeddings to create vectorDB
+#vector_index = Chroma.from_documents(troy_Split, embeddings).as_retriever(search_kwargs={"k":5})
+#lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
+#                                  convert_system_message_to_human=True)
 
 #Create embeddings object
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=apikey)
-#st.write(len(troy_Split))
-#Use Troy csv chunks and embeddings to create vectorDB
-#vector_index = Chroma.from_documents(troy_Split, embeddings).as_retriever(search_kwargs={"k":5})
 
-#Inlining the CSV text - StreamLit Community Cloud stopped reading files - I will have to find the issue
+#I am inlining the CSV text. StreamLit Community Cloud stopped seeing my files. I will have to find the issue and resolve it.
 vectorstore = DocArrayInMemorySearch.from_texts(
 ["Hi	How can I help you?",
 "What CS degrees does your university university offer?	Our university offers BS in Computer Science, BS in Applied Computer Science, BS in Cyber Security, MS in Computer Science.,",
@@ -136,13 +134,9 @@ detailDisplay = "Please ask a question above"
 
 st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 
-#Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with strong matches
-#lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
-#                                  convert_system_message_to_human=True)
-
+#Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with loose matches
 model = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
                                   convert_system_message_to_human=True)
-
 
 #Prompt the user to input their request
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
@@ -152,8 +146,7 @@ responseTitle.write("")
 responseBody = st.empty()
 responseBody.write("")
 
-#test = retriever.get_relevant_documents("When is graduation")
-
+#prompt template and prompt
 template = """Answer the question based on the following context:
 {context}
 
@@ -162,7 +155,7 @@ Question: {question}
 
 prompt = ChatPromptTemplate.from_template(template)
 
-#Functionality to perform the communication with the API
+#Functionality to perform the communication with the API and displaying the results
 if userQuestion:
    responseTitle.write("Processing")
    responseBody.write("")   
@@ -171,12 +164,10 @@ if userQuestion:
       "question": lambda x: x["question"]
    }) | prompt | model      
    output = chain.invoke({"question": userQuestion})
-   responseTitle.write()
+   responseTitle.write("")
    responseBody.write(output.content)
-   
-   
-   
-   
+     
+   #This is commented out due to file read errors. I will find a way to reimplement.
    ##qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
    ##result = qa_chain({"query": userQuestion})
    ##st.write(result["result"])
