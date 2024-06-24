@@ -171,7 +171,7 @@ if userQuestion:
       "question": lambda x: x["question"]
    }) | prompt | model      
    output = chain.invoke({"question": userQuestion})
-   responseTitle.write("Processing")
+   responseTitle.write()
    responseBody.write(output.content)
    
    
