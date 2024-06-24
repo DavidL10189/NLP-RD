@@ -20,8 +20,8 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 #Variables to hold our different documents to be used
-fileTroy = "RAGDocuments/prompt_answer.csv"
-fileOS = "RAGDocuments/prompt_OS_answer.csv"
+fileTroy = "prompt_answer.csv"
+fileOS = "prompt_OS_answer.csv"
 
 st.write("Nothing")
 #Get API Key from Secrets file into a variable
