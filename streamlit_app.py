@@ -19,7 +19,8 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.schema.runnable import RunnableMap
-from langchain.vectorstores import DocArrayInMemorySearch
+from langchain_community.vectorstores import DocArrayInMemorySearch
+from langchain_core.prompts import ChatPromptTemplate
 
 #Variables to hold our different documents to be used
 fileTroy = "RAGDocuments/prompt_answer.csv"
@@ -127,7 +128,7 @@ vectorstore = DocArrayInMemorySearch.from_texts(
 embedding=embeddings
 )
 
-troyRetriever = vectorstore.as_retriever()
+retriever = vectorstore.as_retriever()
 
 #Text to display status to the user
 headerDisplay = "Hello"
@@ -136,8 +137,12 @@ detailDisplay = "Please ask a question above"
 st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 
 #Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with strong matches
-lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
+#lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
+#                                  convert_system_message_to_human=True)
+
+model = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
                                   convert_system_message_to_human=True)
+
 
 #Prompt the user to input their request
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
@@ -147,13 +152,15 @@ responseTitle.write("")
 responseBody = st.empty()
 responseBody.write("")
 
+
+
 template = """Answer the question based on the following context:
 {context}
 
 Question: {question}
 """
 
-qa_chain_prompt = PromptTemplate.from_template(template)
+prompt = ChatPromptTemplate.from_template(template)
 
 #Functionality to perform the communication with the API
 if userQuestion:
@@ -161,9 +168,9 @@ if userQuestion:
    responseBody.write("")
    
    chain = RunnableMap({
-      "context": lambda x: troyRetriever.get_relevant_documents(x["question"]),
+      "context": lambda x: retriever.get_relevant_documents(x["question"]),
       "question": lambda x: x["question"]
-   }) | userQuestion | LLMChain 
+   }) | prompt | model   
    
    chain.invoke({"question": userQuestion})
    
@@ -173,5 +180,5 @@ if userQuestion:
    ##userQuestion_Prompt = PromptTemplate.from_template("{userQuestion}")
    ##lcChain = LLMChain(llm=lcGemini, prompt = userQuestion_Prompt, verbose=True)
    ##lcResponse = lcChain.run(userQuestion)
-   responseTitle.write("")
+   ###responseTitle.write("")
    #responseBody.write(lcResponse)
