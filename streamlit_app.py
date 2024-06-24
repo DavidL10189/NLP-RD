@@ -23,7 +23,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 fileTroy = "RAGDocuments/prompt_answer.csv"
 fileOS = "RAGDocuments/prompt_OS_answer.csv"
 
-
+st.write("Nothing")
 #Get API Key from Secrets file into a variable
 apikey = st.secrets["API_KEY"]
 
@@ -45,18 +45,18 @@ def DocSplitter(document):
    return splitter.split_documents(document)
 
 #Load our documents used for RAG
-loadedTroy = DocLoader(fileTroy)
-loadedOS = DocLoader(fileOS)
+#loadedTroy = DocLoader(fileTroy)
+#loadedOS = DocLoader(fileOS)
 
 #Split our documents
-troy_Split = DocSplitter(loadedTroy)
-OS_Split = DocSplitter(loadedOS)
+#troy_Split = DocSplitter(loadedTroy)
+#OS_Split = DocSplitter(loadedOS)
 
 #Create embeddings object
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")#,google_api_key=apikey)
+#embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")#,google_api_key=apikey)
 #st.write(len(troy_Split))
 #Use Troy csv chunks and embeddings to create vectorDB
-vector_index = Chroma.from_documents(troy_Split, embeddings).as_retriever(search_kwargs={"k":2})
+#vector_index = Chroma.from_documents(troy_Split, embeddings).as_retriever(search_kwargs={"k":2})
 
 #Text to display status to the user
 headerDisplay = "Hello"
@@ -86,9 +86,9 @@ if userQuestion:
    responseBody.write("")
    ##userQuestion_Prompt = PromptTemplate.from_template("{userQuestion}")
    ##lcChain = LLMChain(llm=lcGemini, prompt = userQuestion_Prompt, verbose=True)
-   lc_Chain = RetrievalQA.from_chain_type(lcGemini,retriever=vector_index,return_source_documents=True)
-   lcResponse = lc_Chain({"query":userQuestion})    
+   #lc_Chain = RetrievalQA.from_chain_type(lcGemini,retriever=vector_index,return_source_documents=True)
+   #lcResponse = lc_Chain({"query":userQuestion})    
    ##lcResponse = lcChain.run(userQuestion)
    responseTitle.write("")
-   responseBody.write(lcResponse["result"])
+#   responseBody.write(lcResponse["result"])
    ##responseBody.write(lcResponse)
