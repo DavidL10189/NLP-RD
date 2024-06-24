@@ -1,5 +1,6 @@
 #Research & Development App - OS Natural Language Interface
 
+#Import for supporting ChromaDB vector database
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
@@ -22,26 +23,25 @@ from langchain.schema.runnable import RunnableMap
 from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain_core.prompts import ChatPromptTemplate
 
-#Variables to hold our different documents to be used
+#Variables to hold our different documents to be used.
 fileTroy = "RAGDocuments/prompt_answer.csv"
 fileOS = "RAGDocuments/prompt_OS_answer.csv"
 
-
-#Get API Key from Secrets file into a variable
+#Get API Key from Secrets file into a variable.
 apikey = st.secrets["API_KEY"]
 
-#Function to load a document
+#A function to load a document.
 def DocLoader(fileName):
    loader = CSVLoader(fileName, csv_args={'delimiter':','})
    return loader.load()
 
-#Function to split a document
+#A function to split a document.
 #Chunking sizes chosen should cover entire lines and overlap parts of contiguous lines
 def DocSplitter(document):
    splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
    return splitter.split_documents(document)
 
-# Commented due to streamlit community cloud now giving file errors. Will use again once resolved.
+# Commented due to streamlit community cloud now giving file errors. I will use again once I have resolved the file reading issues.
 #Load our documents used for RAG
 #loadedTroy = DocLoader(fileTroy)
 #loadedOS = DocLoader(fileOS)
@@ -53,10 +53,10 @@ def DocSplitter(document):
 #lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
 #                                  convert_system_message_to_human=True)
 
-#Create embeddings object
+#Create an embeddings object.
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=apikey)
 
-#I am inlining the CSV text. StreamLit Community Cloud stopped seeing my files. I will have to find the issue and resolve it.
+#I am inlining the CSV text. StreamLit Community Cloud stopped seeing my files. I will find the issue and resolve it.
 vectorstore = DocArrayInMemorySearch.from_texts(
 ["Hi	How can I help you?",
 "What CS degrees does your university university offer?	Our university offers BS in Computer Science, BS in Applied Computer Science, BS in Cyber Security, MS in Computer Science.,",
@@ -123,6 +123,7 @@ vectorstore = DocArrayInMemorySearch.from_texts(
 "What is a passing grade at Troy University?	1. A candidate for graduation must have an overall C aver- age (2.0 on a 4.0 scale) on Troy University courses. 2. A candidate for graduation must have an overall C cu- mulative average (2.0 on a 4.0 scale).,",
 "What is the graduation day at any year	Please check academic calendar: https://www.troy.edu/academics/calendar.html,",
 "Who is Dr. Dr. Alberto Arteta, or Dr. Hyung Jae (Chris) Chang or Richard A. Fulton or Dr. Xiaoli Huan or Dr. Byungkwan Jung, or Dr. Suman Kumar or Dr. Long Ma, or Dr. Bill Zhong or Dr. Yanjun Zhao	He is a professor in Troy Computer Science department. Please check the contact information: https://www.troy.edu/academics/colleges-schools/college-arts-sciences/departments/school-science-technology/computer-science/faculty-staff.html"],
+
 embedding=embeddings
 )
 
@@ -134,19 +135,20 @@ detailDisplay = "Please ask a question above"
 
 st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 
-#Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with loose matches
+#Create Gemini AI object. Apply the Gemini API Key. Set a loose temperature.
 model = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
                                   convert_system_message_to_human=True)
 
-#Prompt the user to input their request
+#Prompt the user to input their request.
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
 
+#Clear the section which displays results from Gemini.
 responseTitle = st.empty()
 responseTitle.write("")
 responseBody = st.empty()
 responseBody.write("")
 
-#prompt template and prompt
+#The prompt template and prompt.
 template = """Answer the question based on the following context:
 {context}
 
@@ -155,7 +157,7 @@ Question: {question}
 
 prompt = ChatPromptTemplate.from_template(template)
 
-#Functionality to perform the communication with the API and displaying the results
+#Functionality to perform the communication with the API and then display the results.
 if userQuestion:
    responseTitle.write("Processing")
    responseBody.write("")   
