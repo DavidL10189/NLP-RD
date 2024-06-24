@@ -117,13 +117,19 @@ vectorstore = DocArrayInMemorySearch.from_texts(
 "How is the curriculum designed to stay current with evolving technology trends?	The curriculum is designed to stay current with evolving technology trends through regular updates, industry input, faculty expertise, and collaboration with professionals and organizations in the field.,",
 "Can students from other majors take computer science courses as electives?	Students from other majors may be able to take computer science courses as electives, depending on availability, prerequisites, and approval from the department or academic advisor.,",
 "What is the process for transferring into the Computer Science program from another major or school?	The process for transferring into the Computer Science program from another major or school typically involves meeting admission requirements, submitting transcripts, and possibly undergoing a credit evaluation to determine transferable credits. Students are encouraged to consult with the department or admissions office for specific guidance.,",
-"Is Troy University's Computer Science program accredited by ABET	Currently, Troy University's Computer Science program is undergoing the accreditation process with ABET, the recognized accreditor for computing programs. While the accreditation status is pending, Troy University is accredited by the Southern Association of Colleges and Schools Commission on Colleges (SACSCOC) to award associate, baccalaureate, master, educational specialist, and doctoral degrees.,",
-"What is the start day of term 5	Please check academic calendar: https://www.troy.edu/academics/calendar.html,",
+"Is Troy University's Computer Science program accredited by ABET?	Currently, Troy University's Computer Science program is undergoing the accreditation process with ABET, the recognized accreditor for computing programs. While the accreditation status is pending, Troy University is accredited by the Southern Association of Colleges and Schools Commission on Colleges (SACSCOC) to award associate, baccalaureate, master, educational specialist, and doctoral degrees.,",
+"What is the start day of term 5?	Please check academic calendar: https://www.troy.edu/academics/calendar.html,",
 "What concentrations are in MS CS 	MS CS offers concentrations in AI, Bioinformatics, Cloud and Big Data, Computer Network and Security, cyber security, data science, software development, video game design,",
 "What is a passing grade at Troy University?	1. A candidate for graduation must have an overall C aver- age (2.0 on a 4.0 scale) on Troy University courses. 2. A candidate for graduation must have an overall C cu- mulative average (2.0 on a 4.0 scale).,",
 "What is the graduation day at any year	Please check academic calendar: https://www.troy.edu/academics/calendar.html,",
-"Who is Dr. Dr. Alberto Arteta, or Dr. Hyung Jae (Chris) Chang or Richard A. Fulton or Dr. Xiaoli Huan or Dr. Byungkwan Jung, or Dr. Suman Kumar or Dr. Long Ma, or Dr. Bill Zhong or Dr. Yanjun Zhao	He is a professor in Troy Computer Science department. Please check the contact information: https://www.troy.edu/academics/colleges-schools/college-arts-sciences/departments/school-science-technology/computer-science/faculty-staff.html"],
-
+"Who is Dr. Dr. Alberto Arteta, or Dr. Hyung Jae (Chris) Chang or Richard A. Fulton or Dr. Xiaoli Huan or Dr. Byungkwan Jung, or Dr. Suman Kumar or Dr. Long Ma, or Dr. Bill Zhong or Dr. Yanjun Zhao	He is a professor in Troy Computer Science department. Please check the contact information: https://www.troy.edu/academics/colleges-schools/college-arts-sciences/departments/school-science-technology/computer-science/faculty-staff.html",
+"How do you shutdown Windows? You use the Windows shutdown command.",
+"How do you reboot Windows? You use the Windows shutdown -r command.",
+"How do you copy files? You use Windows File Explorer",
+"How do your partition a disk? You use diskmgmt.msc",
+"How do you open calculator? You execute calc.exe",
+"How you you add new local users, run task scheduler, or view events? You use compmgmt.msc"
+],
 embedding=embeddings
 )
 
