@@ -165,15 +165,18 @@ prompt = ChatPromptTemplate.from_template(template)
 #Functionality to perform the communication with the API
 if userQuestion:
    responseTitle.write("Processing")
-   responseBody.write("")
-   
+   responseBody.write("")   
    chain = RunnableMap({
       "context": lambda x: retriever.get_relevant_documents(x["question"]),
       "question": lambda x: x["question"]
-   }) | prompt | model   
-   
+   }) | prompt | model      
    output = chain.invoke({"question": userQuestion})
-   st.write(output.content)
+   responseTitle.write("Processing")
+   responseBody.write(output.content)
+   
+   
+   
+   
    ##qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
    ##result = qa_chain({"query": userQuestion})
    ##st.write(result["result"])
