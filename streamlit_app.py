@@ -172,7 +172,7 @@ if userQuestion:
       "question": lambda x: x["question"]
    }) | prompt | model   
    
-   output = chain.invoke({"question": "What partnerships does the Computer Science department have with industry companies?"})
+   output = chain.invoke({"question": userQuestion})
    st.write(output.content)
    ##qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
    ##result = qa_chain({"query": userQuestion})
