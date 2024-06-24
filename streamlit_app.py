@@ -175,6 +175,12 @@ if userQuestion:
    responseTitle.write("")
    responseBody.write(output.content)
      
+   #Add code here if the response is OS related.
+   #The output will be written to FTP flat file or
+   #cloud based database. The OS will run a client application
+   #to retrieve the output, delete it from the file/database,
+   #and then execute the command for the user.
+
    #This is commented out due to file read errors. I will find a way to reimplement.
    ##qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
    ##result = qa_chain({"query": userQuestion})
