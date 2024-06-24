@@ -45,7 +45,7 @@ def DocSplitter(document):
    return splitter.split_documents(document)
 
 #Load our documents used for RAG
-#loadedTroy = DocLoader(fileTroy)
+loadedTroy = DocLoader(fileTroy)
 #loadedOS = DocLoader(fileOS)
 
 #Split our documents
