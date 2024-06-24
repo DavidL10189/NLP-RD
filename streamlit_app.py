@@ -152,7 +152,7 @@ responseTitle.write("")
 responseBody = st.empty()
 responseBody.write("")
 
-
+#test = retriever.get_relevant_documents("When is graduation")
 
 template = """Answer the question based on the following context:
 {context}
@@ -172,8 +172,8 @@ if userQuestion:
       "question": lambda x: x["question"]
    }) | prompt | model   
    
-   chain.invoke({"question": userQuestion})
-   
+   output = chain.invoke({"question": "What partnerships does the Computer Science department have with industry companies?"})
+   st.write(output.content)
    ##qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
    ##result = qa_chain({"query": userQuestion})
    ##st.write(result["result"])
