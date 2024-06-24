@@ -42,17 +42,20 @@ def DocSplitter(document):
 
 #Load our documents used for RAG
 loadedTroy = DocLoader(fileTroy)
-loadedOS = DocLoader(fileOS)
+#loadedOS = DocLoader(fileOS)
+
+
 
 #Split our documents
 troy_Split = DocSplitter(loadedTroy)
-OS_Split = DocSplitter(loadedOS)
+#OS_Split = DocSplitter(loadedOS)
+#st.write(troy_Split)
 
 #Create embeddings object
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=apikey)
-st.write(len(troy_Split))
+#st.write(len(troy_Split))
 #Use Troy csv chunks and embeddings to create vectorDB
-vector_index = Chroma.from_documents(troy_Split, embeddings)#.as_retriever(search_kwargs={"k":1})
+vector_index = Chroma.from_documents(troy_Split, embeddings).as_retriever(search_kwargs={"k":5})
 
 #Text to display status to the user
 headerDisplay = "Hello"
@@ -61,7 +64,8 @@ detailDisplay = "Please ask a question above"
 st.title("Gemini assistant & :red[NLP OS I/F R&D]")
 
 #Create Gemini AI object. Apply the Gemini API Key. Set temperature to help with strong matches
-lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.2,convert_system_message_to_human=True)
+lcGemini = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=apikey,temperature=0.9,
+                                  convert_system_message_to_human=True)
 
 #Prompt the user to input their request
 userQuestion = st.text_area("You can ask general questions, questions about Troy University, and in the future interface with your OS! Press **CTRL+Enter** to send your question.")
@@ -71,13 +75,18 @@ responseTitle.write("")
 responseBody = st.empty()
 responseBody.write("")
 
+template = """Try to use the following context to answer the question {context}. If you context doesn't have an answer, you do not have to use it. Question" {question} """
+qa_chain_prompt = PromptTemplate.from_template(template)
 
 #Functionality to perform the communication with the API
 if userQuestion:
    responseTitle.write("Processing")
    responseBody.write("")
-   userQuestion_Prompt = PromptTemplate.from_template("{userQuestion}")
-   lcChain = LLMChain(llm=lcGemini, prompt = userQuestion_Prompt, verbose=True)
-   lcResponse = lcChain.run(userQuestion)
+   qa_chain = RetrievalQA.from_chain_type(lcGemini, retriever=vector_index,return_source_documents=True,chain_type_kwargs={"prompt": qa_chain_prompt})
+   result = qa_chain({"query": userQuestion})
+   st.write(result["result"])
+   ##userQuestion_Prompt = PromptTemplate.from_template("{userQuestion}")
+   ##lcChain = LLMChain(llm=lcGemini, prompt = userQuestion_Prompt, verbose=True)
+   ##lcResponse = lcChain.run(userQuestion)
    responseTitle.write("")
-   responseBody.write(lcResponse)
+   ##responseBody.write(lcResponse)
